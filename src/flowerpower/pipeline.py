@@ -165,7 +165,7 @@ class PipelineManager:
         else:
             raise ValueError(f"Unknown trigger type: {type}")
 
-    def _get_cron_trigger(self, self.cfg.scheduler.pipeline[pipeline]: Dict, start_time: dt.datetime, end_time: Optional[dt.datetime], **kwargs):
+    def _get_cron_trigger(self, start_time: dt.datetime, end_time: Optional[dt.datetime], **kwargs):
         from apscheduler.triggers.cron import CronTrigger
         crontab = kwargs.pop("crontab", None) or self.cfg.scheduler.pipeline[pipeline].get("crontab", None)
         if crontab is not None:
@@ -185,7 +185,7 @@ class PipelineManager:
                 timezone=kwargs.pop("timezone", tz.gettz("Europe/Berlin")) or self.cfg.scheduler.pipeline[pipeline].get("timezone", tz.gettz("Europe/Berlin")),
             )
 
-    def _get_interval_trigger(self, self.cfg.scheduler.pipeline[pipeline]: Dict, start_time: dt.datetime, end_time: Optional[dt.datetime], **kwargs):
+    def _get_interval_trigger(self, start_time: dt.datetime, end_time: Optional[dt.datetime], **kwargs):
         from apscheduler.triggers.interval import IntervalTrigger
         return IntervalTrigger(
             weeks=kwargs.pop("weeks", 0) or self.cfg.scheduler.pipeline[pipeline].get("weeks", 0),
@@ -198,7 +198,7 @@ class PipelineManager:
             end_time=end_time,
         )
 
-    def _get_calendar_trigger(self, self.cfg.scheduler.pipeline[pipeline]: Dict, start_time: dt.datetime, end_time: Optional[dt.datetime], **kwargs):
+    def _get_calendar_trigger(self, start_time: dt.datetime, end_time: Optional[dt.datetime], **kwargs):
         from apscheduler.triggers.calendarinterval import CalendarIntervalTrigger
         return CalendarIntervalTrigger(
             weeks=kwargs.pop("weeks", 0) or self.cfg.scheduler.pipeline[pipeline].get("weeks", 0),
